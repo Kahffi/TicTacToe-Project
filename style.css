@@ -1,0 +1,76 @@
+:root {
+	--move-type: "aasdas"; /*To display text when grid hovered */
+}
+
+body {
+	background-color: whitesmoke;
+	font-family: Tahoma, Roboto, "Segoe UI", Geneva, Verdana, sans-serif;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+#navbar {
+	padding: 10px clamp(20px, 3vw, 70px);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.icon.small {
+	width: 30px;
+}
+
+.github-container {
+	font-weight: 500;
+	text-decoration: none;
+	color: black;
+	gap: 6px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#page-logo {
+	margin: 0;
+}
+
+.main-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 92vh;
+	max-height: 500px;
+}
+
+.board-grid {
+	display: grid;
+	grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+	border: 1px solid black;
+	width: fit-content;
+}
+
+.grid-item {
+	box-sizing: border-box;
+	border: 1px solid salmon;
+	width: 100px;
+	height: 100px;
+	position: relative;
+	font-weight: bold;
+	font-size: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+
+.grid-item:hover::after {
+	font-weight: bold;
+	content: var(--move-type);
+	font-size: 40px;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	opacity: 50%;
+}
