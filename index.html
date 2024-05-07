@@ -27,7 +27,7 @@
 			</a>
 		</nav>
 		<main class="main-container">
-			<div class="board-grid">
+			<div class="board-grid disabled">
 				<div class="grid-item" id="grid1"></div>
 				<div class="grid-item" id="grid2"></div>
 				<div class="grid-item" id="grid3"></div>
@@ -37,6 +37,58 @@
 				<div class="grid-item" id="grid7"></div>
 				<div class="grid-item" id="grid8"></div>
 				<div class="grid-item" id="grid9"></div>
+			</div>
+			<div class="main-menu modal">
+				<form method="post" id="game-type-form">
+					<label class="radio-wrapper" for="gameType1" id="gameTypeWrapper1">
+						<div class="game-type-div">
+							<div class="avatar-selector-wrapper player1">
+								<button type="button" class="select-btn prev">◀</button>
+								<img src="src/img/avatars/Avatar1.svg" alt="" />
+								<button type="button" class="select-btn next">▶</button>
+							</div>
+							VS
+							<div class="avatar-selector-wrapper player2">
+								<button type="button" class="select-btn prev">◀</button>
+								<img src="src/img/avatars/Avatar5.svg" alt="" />
+								<button type="button" class="select-btn next">▶</button>
+							</div>
+						</div>
+					</label>
+					<input
+						class="game-type-input"
+						type="radio"
+						value="1"
+						name="gameType"
+						id="gameType1"
+					/>
+
+					<label class="radio-wrapper" for="gameType2">
+						<div class="game-type-div">
+							<div class="avatar-selector-wrapper player1">
+								<button type="button" class="select-btn prev">◀</button>
+								<img src="src/img/avatars/Avatar1.svg" alt="" />
+								<button type="button" class="select-btn next">▶</button>
+							</div>
+							VS
+							<div class="avatar-selector-wrapper player2">
+								<button type="button" class="select-btn prev">◀</button>
+								<img src="src/img/avatars/Avatar5.svg" alt="" />
+								<button type="button" class="select-btn next">▶</button>
+							</div>
+						</div>
+					</label>
+					<input
+						class="game-type-input"
+						type="radio"
+						value="1"
+						name="gameType"
+						id="gameType2"
+					/>
+
+					<button type="submit">Submit</button>
+				</form>
+				<button type="button">Start</button>
 			</div>
 		</main>
 	</body>
