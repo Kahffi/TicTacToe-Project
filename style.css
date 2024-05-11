@@ -37,8 +37,8 @@ body {
 
 .main-container {
 	display: flex;
-	justify-content: center;
 	align-items: center;
+	justify-content: center;
 	flex-direction: column;
 	min-height: 92vh;
 }
@@ -47,9 +47,6 @@ body {
 	display: grid;
 	grid-template: repeat(3, 1fr) / repeat(3, 1fr);
 	width: fit-content;
-}
-.disabled {
-	display: none;
 }
 
 .grid-item {
@@ -80,24 +77,30 @@ body {
 #game-type-form {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 30px;
 }
 
 .radio-wrapper {
 	display: flex;
 	flex-direction: column;
-	border: 2px solid black;
 	padding: 15px 25px 0 25px;
+	align-items: center;
 	justify-content: baseline;
 	border-radius: 30px;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+	box-sizing: border-box;
 }
 
-.radio-wrapper input {
-	opacity: 0;
+.radio-wrapper h2 {
+	margin: 0;
+}
+
+.game-type-input {
+	display: none;
 }
 
 .radio-wrapper.selected {
-	transform: translateY(-10px);
+	outline: 4px solid rgb(62, 185, 45);
 }
 
 .radio-wrapper.blur {
@@ -114,4 +117,53 @@ body {
 	align-items: center;
 	justify-content: center;
 	gap: 30px;
+}
+
+.player1-avatar,
+.player2-avatar {
+	width: 130px;
+}
+
+.player1-info,
+.player2-info {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.game-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 20px;
+	padding: 20px;
+}
+
+.game-info {
+	display: flex;
+	gap: 100px;
+}
+
+.game-info .player1-container div,
+.game-info .player2-container div {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.game-info .player1-container,
+.game-info .player2-container {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+
+.game-info .player1-container img,
+.game-info .player2-container img {
+	width: 100px;
+}
+
+.disabled {
+	display: none;
 }

@@ -27,34 +27,70 @@
 			</a>
 		</nav>
 		<main class="main-container">
-			<div class="board-grid disabled">
-				<div class="grid-item" id="grid1"></div>
-				<div class="grid-item" id="grid2"></div>
-				<div class="grid-item" id="grid3"></div>
-				<div class="grid-item" id="grid4"></div>
-				<div class="grid-item" id="grid5"></div>
-				<div class="grid-item" id="grid6"></div>
-				<div class="grid-item" id="grid7"></div>
-				<div class="grid-item" id="grid8"></div>
-				<div class="grid-item" id="grid9"></div>
+			<!-- Will be displayed after main menu is submitted -->
+			<div class="game-container">
+				<div class="game-info">
+					<div class="player1-container">
+						<div>
+							<h2 title="player move type" id="player1-move-type">X</h2>
+							<img src="" alt="" class="player1-avatar" />
+							<h4 id="player1-name">Player1</h4>
+						</div>
+						<h2 title="player score" id="player1-score">0</h2>
+					</div>
+					<div class="player2-container">
+						<h2 title="player score" id="player2-score">1</h2>
+						<div>
+							<h2 title="player move type" id="player2-move-type">O</h2>
+							<img src="" alt="" class="player2-avatar" />
+							<h4 id="player2-name">Player2</h4>
+						</div>
+					</div>
+				</div>
+				<div class="board-grid">
+					<div class="grid-item" id="grid1"></div>
+					<div class="grid-item" id="grid2"></div>
+					<div class="grid-item" id="grid3"></div>
+					<div class="grid-item" id="grid4"></div>
+					<div class="grid-item" id="grid5"></div>
+					<div class="grid-item" id="grid6"></div>
+					<div class="grid-item" id="grid7"></div>
+					<div class="grid-item" id="grid8"></div>
+					<div class="grid-item" id="grid9"></div>
+				</div>
 			</div>
+
 			<div class="main-menu modal">
 				<form method="post" id="game-type-form">
 					<label class="radio-wrapper" for="gameType1" id="gameTypeWrapper1">
+						<h2>Player VS Player</h2>
 						<div class="game-type-div">
 							<div class="avatar-selector-wrapper player1">
 								<button type="button" class="select-btn prev">◀</button>
-								<img src="src/img/avatars/Avatar1.svg" alt="" />
+								<div class="player1-info">
+									<img
+										class="player1-avatar"
+										src="src/img/avatars/Avatar1.svg"
+										alt=""
+									/>
+								</div>
 								<button type="button" class="select-btn next">▶</button>
 							</div>
 							VS
 							<div class="avatar-selector-wrapper player2">
 								<button type="button" class="select-btn prev">◀</button>
-								<img src="src/img/avatars/Avatar5.svg" alt="" />
+								<div class="player2-info">
+									<img
+										class="player2-avatar"
+										src="src/img/avatars/Avatar5.svg"
+										alt=""
+									/>
+								</div>
 								<button type="button" class="select-btn next">▶</button>
 							</div>
 						</div>
 					</label>
+
 					<input
 						class="game-type-input"
 						type="radio"
@@ -64,20 +100,34 @@
 					/>
 
 					<label class="radio-wrapper" for="gameType2">
+						<h2>Player VS BOT</h2>
 						<div class="game-type-div">
 							<div class="avatar-selector-wrapper player1">
 								<button type="button" class="select-btn prev">◀</button>
-								<img src="src/img/avatars/Avatar1.svg" alt="" />
+								<div class="player1-info">
+									<img
+										class="player1-avatar"
+										src="src/img/avatars/Avatar1.svg"
+										alt=""
+									/>
+								</div>
 								<button type="button" class="select-btn next">▶</button>
 							</div>
 							VS
 							<div class="avatar-selector-wrapper player2">
 								<button type="button" class="select-btn prev">◀</button>
-								<img src="src/img/avatars/Avatar5.svg" alt="" />
+								<div class="player2-info">
+									<img
+										class="player2-avatar"
+										src="src/img/avatars/Avatar5.svg"
+										alt=""
+									/>
+								</div>
 								<button type="button" class="select-btn next">▶</button>
 							</div>
 						</div>
 					</label>
+
 					<input
 						class="game-type-input"
 						type="radio"
@@ -86,9 +136,10 @@
 						id="gameType2"
 					/>
 
-					<button type="submit">Submit</button>
+					<input type="hidden" id="player1Avatar" name="player1Avatar" />
+					<input type="hidden" id="player2Avatar" name="player2Avatar" />
+					<button type="submit" class="button">Submit</button>
 				</form>
-				<button type="button">Start</button>
 			</div>
 		</main>
 	</body>

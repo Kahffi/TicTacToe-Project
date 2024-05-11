@@ -1,20 +1,121 @@
 const gridItems = document.querySelectorAll(".grid-item");
 const gameTypeInputs = document.querySelectorAll(".game-type-input");
 const body = document.querySelector("body");
+const gameTypeForm = document.getElementById("game-type-form");
 
+const player1NameInput = createPlayerNameInput(1);
+const player2NameInput = createPlayerNameInput(2);
+
+const players = new Map();
+
+//variables to track which player making a turn
+const game = (function () {
+	let round = 0;
+	let gameCount = 1;
+
+	const getRound = () => round;
+	const getGameCount = () => gameCount;
+
+	function updateGameCount() {
+		gameCount *= -1;
+	}
+
+	const getCurrentPlayer = () => {
+		if (gameCount < 0) {
+			return players.get("player2");
+		}
+		return players.get("player1");
+	};
+
+	const getCurrentMoveType = () => {
+		return getCurrentPlayer().getMoveType();
+	};
+
+	return { getRound, updateGameCount, getCurrentPlayer, getCurrentMoveType };
+})();
+
+let player1Avatar;
+let player2Avatar;
+
+function boardClick(e) {
+	// extracting grid index from grid id
+	const gridIdx = e.target.id.replace("grid", "") - 1;
+	// can't insert an already occupied tile
+	if (!isTileEmpty(gridIdx)) {
+		return;
+	}
+
+	turn++;
+	// setting board sign according to the player turn
+	gridItems[gridIdx].textContent = game.getCurrentMoveType();
+
+	// finding the winner only if turn already reach 5
+	if (turn >= 5) {
+		if (horizontalCheck(game.getCurrentMoveType())) {
+			const text = document.createElement("p");
+			text.textContent = "winner detected";
+			body.appendChild(text);
+		}
+	}
+	game.updateGameCount();
+	setHoverText("");
+}
+
+function createPlayerNameInput(num) {
+	const input = document.createElement("input");
+	input.type = "text";
+	input.name = `player-name`;
+	input.value = `player${num}`;
+	input.classList.add("name-input");
+	input.required = true;
+	return input;
+}
+
+// variables to track last selected gameType
 let lastWrapper = null;
 
+gameTypeForm.onsubmit = function (e) {
+	e.preventDefault();
+
+	if (lastWrapper == null) {
+		return;
+	}
+
+	const data = new FormData(e.target);
+
+	// assigning player 1 & 2 avatar if any game type is selected
+	player1Avatar = lastWrapper
+		.querySelector(".player1-avatar")
+		.getAttribute("src");
+	player2Avatar = lastWrapper
+		.querySelector(".player2-avatar")
+		.getAttribute("src");
+
+	players.set("player1", createPlayer(data.getAll("player-name")[0], "X"));
+	players.set("player2", createPlayer(data.getAll("player-name")[1], "O"));
+	initGameDisplay();
+};
+
 gameTypeInputs.forEach((gameType) => {
-	console.log(gameType);
+	// When player choose game  type, the selected game type will have border color
 	gameType.onchange = function (e) {
 		if (lastWrapper != null) {
+			// remove the outline from the unfocused gameType
 			lastWrapper.classList.remove("selected");
 		}
+		// since the wrapper is the previous sibling of the radio input
+		// *i do not wrap the radio input with the gametype card
 		const wrapper = e.target.previousElementSibling;
 		wrapper.classList.add("selected");
 		lastWrapper = wrapper;
-		console.log("clicked");
+		lastWrapper.querySelector(".player1-info").appendChild(player1NameInput);
+		lastWrapper.querySelector(".player2-info").appendChild(player2NameInput);
 	};
+});
+
+gridItems.forEach((grid) => {
+	grid.addEventListener("click", boardClick);
+	grid.onmouseover = tileHover;
 });
 
 const mainMenu = (function () {
@@ -35,12 +136,11 @@ const mainMenu = (function () {
 	const initAvatarImgs = (function () {
 		for (let i = 0; i < numOfAvatar; i++) {
 			avatarImgs[i] = `src/img/avatars/Avatar${i + 1}.svg`;
-			console.table(avatarImgs);
 		}
 	})();
 
 	function prevAvatar(e) {
-		const avatarImg = e.target.nextElementSibling;
+		const avatarImg = e.target.nextElementSibling.querySelector("img");
 		let imgIdx = avatarImg.getAttribute("src").replace(/[^\d]/g, "") - 1;
 
 		if (imgIdx <= 1) {
@@ -51,7 +151,7 @@ const mainMenu = (function () {
 	}
 
 	function nextAvatar(e) {
-		const avatarImg = e.target.previousElementSibling;
+		const avatarImg = e.target.previousElementSibling.querySelector("img");
 		let imgIdx = avatarImg.getAttribute("src").replace(/[^\d]/g, "") - 1;
 		console.log(imgIdx);
 		if (imgIdx >= avatarImgs.length - 1) {
@@ -66,51 +166,26 @@ const map = new Map();
 
 let turn = 0;
 
-gridItems.forEach((grid) => {
-	grid.addEventListener("click", boardClick);
-	grid.onmouseover = tileHover;
-});
-
 function createPlayer(name, moveType) {
 	let scores = 0;
 
 	const getMoveType = () => moveType;
 	const getName = () => name;
-	const getScores = () => getScores;
-	return { getMoveType, getName };
-}
+	const getScores = () => scores;
 
-function boardClick(e) {
-	const gridIdx = e.target.id.replace("grid", "") - 1;
-
-	// can't insert an already occupied tile
-	if (!isTileEmpty(gridIdx)) {
-		return;
+	function addScore() {
+		scores++;
 	}
-
-	turn++;
-	gridItems[gridIdx].textContent = "X";
-
-	// finding the winner only if turn already reach 5
-	if (turn >= 5) {
-		if (horizontalCheck("X")) {
-			const text = document.createElement("p");
-			text.textContent = "winner detected";
-
-			body.appendChild(text);
-		}
-	}
-	setHoverText("");
+	return { getMoveType, getName, addScore, getScores };
 }
 
 function tileHover(e) {
-	console.log("hovered");
 	const gridIdx = e.target.id.replace("grid", "") - 1;
 	if (!isTileEmpty(gridIdx)) {
 		setHoverText("");
 		return;
 	}
-	setHoverText("pop");
+	setHoverText(game.getCurrentMoveType());
 }
 
 function isTileEmpty(index) {
@@ -145,6 +220,18 @@ function diagCheck(moveType) {}
 function antiDiagCheck(moveType) {}
 
 function setHoverText(text) {
-	console.log(document.documentElement.style);
 	document.documentElement.style.setProperty("--move-type", `'${text}'`);
+}
+
+function initGameDisplay() {
+	document.querySelector(".main-menu.modal").classList.add("disabled");
+	document.querySelector(".game-container").classList.remove("disabled");
+	document.querySelector(".player1-avatar").setAttribute("src", player1Avatar);
+	document.querySelector(".player2-avatar").setAttribute("src", player2Avatar);
+	document.getElementById(`player1-name`).textContent = players
+		.get("player1")
+		.getName();
+	document.getElementById(`player2-name`).textContent = players
+		.get("player2")
+		.getName();
 }
