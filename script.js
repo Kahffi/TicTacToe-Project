@@ -7,6 +7,8 @@ const player1NameInput = createPlayerNameInput(1);
 const player2NameInput = createPlayerNameInput(2);
 
 const players = new Map();
+const cols = 3;
+const rows = 3;
 
 //variables to track which player making a turn
 const game = (function () {
@@ -51,9 +53,17 @@ function boardClick(e) {
 
 	// finding the winner only if turn already reach 5
 	if (turn >= 5) {
-		if (horizontalCheck(game.getCurrentMoveType())) {
+		if (verticalCheck(game.getCurrentMoveType())) {
 			const text = document.createElement("p");
-			text.textContent = "winner detected";
+			text.textContent = "winner detected (vertical)";
+			body.appendChild(text);
+		} else if (diagCheck(game.getCurrentMoveType())) {
+			const text = document.createElement("p");
+			text.textContent = "winner detected (diagonal)";
+			body.appendChild(text);
+		} else if (horizontalCheck(game.getCurrentMoveType())) {
+			const text = document.createElement("p");
+			text.textContent = "winner detected (horizontal)";
 			body.appendChild(text);
 		}
 	}
@@ -185,6 +195,9 @@ function tileHover(e) {
 		setHoverText("");
 		return;
 	}
+	if (players.size == 0) {
+		return;
+	}
 	setHoverText(game.getCurrentMoveType());
 }
 
@@ -193,9 +206,7 @@ function isTileEmpty(index) {
 }
 
 function horizontalCheck(moveType) {
-	const cols = 3;
-	const rows = 3;
-	for (let i = 0; i < cols; i += 3) {
+	for (let i = 0; i < cols * 3; i += 3) {
 		let found = 0;
 		for (let j = i; j < rows; j++) {
 			if (gridItems[j].textContent !== moveType) {
@@ -213,11 +224,52 @@ function horizontalCheck(moveType) {
 	return false;
 }
 
-function verticalCheck(moveType) {}
+function verticalCheck(moveType) {
+	for (let i = 0; i < rows; i++) {
+		let found = 0;
+		for (let j = i; j < cols * 3; j += 3) {
+			if (gridItems[j].textContent !== moveType) {
+				break;
+			}
+			if (gridItems[j].textContent === moveType) {
+				found++;
+			}
+		}
+		if (found >= 3) {
+			return true;
+		}
+	}
+	return false;
+}
 
-function diagCheck(moveType) {}
-
-function antiDiagCheck(moveType) {}
+function diagCheck(moveType) {
+	// diagonal check
+	let found = 0;
+	for (let i = 0; i < 9; i += 4) {
+		if (gridItems[i].textContent != moveType) {
+			console.log("break");
+			break;
+		}
+		found++;
+		console.log(found, "diagonal");
+		if (found >= 3) {
+			return true;
+		}
+	}
+	found = 0;
+	// anti diagonal check
+	for (let i = 6; i >= 2; i -= 2) {
+		if (gridItems[i].textContent != moveType) {
+			break;
+		}
+		found++;
+		console.log(found, "anti-diagonal");
+		if (found >= 3) {
+			return true;
+		}
+	}
+	return false;
+}
 
 function setHoverText(text) {
 	document.documentElement.style.setProperty("--move-type", `'${text}'`);
